@@ -264,6 +264,9 @@ const txToOperation =
         value = value.plus(feeValue);
       }
     }
+    
+    // https://xrpl.org/basic-data-types.html#specifying-time
+    const toEpochDate = (946684800 + date) * 1000
 
     const op: Operation = {
       id: `${account.id}-${hash}-${type}`,
@@ -276,7 +279,7 @@ const txToOperation =
       blockHeight: inLedger,
       senders: [Account],
       recipients: [Destination],
-      date: new Date(date),
+      date: new Date(toEpochDate),
       transactionSequenceNumber: Sequence,
       extra: {},
     };
