@@ -723,8 +723,8 @@ const estimateMaxSpendable = async ({
 }) => {
   const mainAccount = getMainAccount(account, parentAccount);
   const r = await getServerInfo(mainAccount.endpointConfig);
-  const reserveBaseXRP = new BigNumber(
-    r.info.validated_ledger.reserve_base_xrp
+  const reserveBaseXRP = parseAPIValue(
+    r.info.validated_ledger.reserve_base_xrp.toString()
   );
   const t = await prepareTransaction(mainAccount, {
     ...createTransaction(),
