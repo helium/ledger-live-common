@@ -83,6 +83,11 @@ const validateTag = (tag) => {
   );
 };
 
+const getNextValidSequence = async (account: Account) => { 
+  const accInfo = await getAccountInfo(account.freshAddress, true);
+  return accInfo.account_data.Sequence
+};
+
 const signOperation = ({
   account,
   transaction,
@@ -104,7 +109,7 @@ const signOperation = ({
           DestinationTag: tag,
           Fee: fee.toString(),
           Flags: 2147483648,
-          Sequence: await getSequenceNumber(account),
+          Sequence: await getNextValidSequence(account),
           LastLedgerSequence: account.blockHeight + 20,
         };
         if (tag)

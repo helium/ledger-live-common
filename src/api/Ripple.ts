@@ -28,7 +28,10 @@ export const submit = async (signature: string): Promise<any> => {
   return res.data.result;
 };
 
-export const getAccountInfo = async (recipient: string): Promise<any> => {
+export const getAccountInfo = async (
+  recipient: string,
+  current?: boolean
+): Promise<any> => {
   const res = await network({
     method: "POST",
     url: `${defaultEndpoint()}`,
@@ -37,7 +40,7 @@ export const getAccountInfo = async (recipient: string): Promise<any> => {
       params: [
         {
           account: recipient,
-          ledger_index: "validated",
+          ledger_index: current ? "current" : "validated",
         },
       ],
     },
