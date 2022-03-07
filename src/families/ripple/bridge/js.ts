@@ -83,9 +83,9 @@ const validateTag = (tag) => {
   );
 };
 
-const getNextValidSequence = async (account: Account) => { 
+const getNextValidSequence = async (account: Account) => {
   const accInfo = await getAccountInfo(account.freshAddress, true);
-  return accInfo.account_data.Sequence
+  return accInfo.account_data.Sequence;
 };
 
 const signOperation = ({
