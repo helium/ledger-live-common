@@ -87,3 +87,19 @@ export const getTransactions = async (
   });
   return res.data.result;
 };
+
+export default async function getLedgerIndex(): Promise<number> {
+  const ledgerResponse = await network({
+    method: "POST",
+    url: `${defaultEndpoint()}`,
+    data: {
+      method: "ledger",
+      params: [
+        {
+          ledger_index: "validated",
+        },
+      ],
+    },
+  });
+  return ledgerResponse.data.result.ledger_index;
+}

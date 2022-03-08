@@ -37,7 +37,7 @@ import type { CurrencyBridge, AccountBridge } from "../../../types/bridge";
 import signTransaction from "../../../hw/signTransaction";
 import type { Transaction, NetworkInfo } from "../types";
 import { makeAccountBridgeReceive, mergeOps } from "../../../bridge/jsHelpers";
-import {
+import getLedgerIndex, {
   submit,
   getAccountInfo,
   getServerInfo,
@@ -46,30 +46,9 @@ import {
 } from "../../../api/Ripple";
 
 const NEW_ACCOUNT_ERROR_MESSAGE = "actNotFound";
-
-// true if the error should be forwarded and is not a "not found" case
-const checkAccountNotFound = (e) => {
-  return (
-    !e.data ||
-    (e.message !== NEW_ACCOUNT_ERROR_MESSAGE &&
-      e.data.error !== NEW_ACCOUNT_ERROR_MESSAGE)
-  );
-};
+const LEDGER_OFFSET = 20;
 
 const receive = makeAccountBridgeReceive();
-
-const getSequenceNumber = async (account) => {
-  const lastOp = account.operations.find((op) => op.type === "OUT");
-
-  if (lastOp && lastOp.transactionSequenceNumber) {
-    return (
-      lastOp.transactionSequenceNumber + account.pendingOperations.length + 1
-    );
-  }
-
-  const info = await getAccountInfo(account.freshAddress);
-  return info.sequence + account.pendingOperations.length;
-};
 
 const uint32maxPlus1 = new BigNumber(2).pow(32);
 
@@ -101,6 +80,7 @@ const signOperation = ({
     async function main() {
       try {
         const tag = transaction.tag ? transaction.tag : undefined;
+        const nextSequenceNumber = await getNextValidSequence(account);
         const payment = {
           TransactionType: "Payment",
           Account: account.freshAddress,
@@ -109,8 +89,8 @@ const signOperation = ({
           DestinationTag: tag,
           Fee: fee.toString(),
           Flags: 2147483648,
-          Sequence: await getNextValidSequence(account),
-          LastLedgerSequence: account.blockHeight + 20,
+          Sequence: nextSequenceNumber,
+          LastLedgerSequence: (await getLedgerIndex()) + LEDGER_OFFSET,
         };
         if (tag)
           invariant(
@@ -152,8 +132,7 @@ const signOperation = ({
           senders: [account.freshAddress],
           recipients: [transaction.recipient],
           date: new Date(),
-          // we probably can't get it so it's a predictive value
-          transactionSequenceNumber: await getSequenceNumber(account),
+          transactionSequenceNumber: nextSequenceNumber,
           extra: {} as any,
         };
 
@@ -299,19 +278,11 @@ const txToOperation =
 const recipientIsNew = async (recipient: string) => {
   if (!isRecipientValid(recipient)) return false;
 
-  try {
-    const info = await getAccountInfo(recipient);
-    if (info.error === NEW_ACCOUNT_ERROR_MESSAGE) {
-      return true;
-    }
-    return false;
-  } catch (e) {
-    if (checkAccountNotFound(e)) {
-      throw e;
-    }
-
+  const info = await getAccountInfo(recipient);
+  if (info.error === NEW_ACCOUNT_ERROR_MESSAGE) {
     return true;
   }
+  return false;
 };
 
 // FIXME this could be cleaner
@@ -383,13 +354,7 @@ const currencyBridge: CurrencyBridge = {
               const accountId = `ripplejs:2:${currency.id}:${address}:${derivationMode}`;
               let info;
 
-              try {
-                info = await getAccountInfo(address);
-              } catch (e) {
-                if (checkAccountNotFound(e)) {
-                  throw e;
-                }
-              }
+              info = await getAccountInfo(address);
 
               // fresh address is address. ripple never changes.
               const freshAddress = address;
@@ -545,13 +510,7 @@ const sync = ({
         const maxLedgerVersion = Number(ledgers[1]);
         let info;
 
-        try {
-          info = await getAccountInfo(freshAddress);
-        } catch (e) {
-          if (checkAccountNotFound(e)) {
-            throw e;
-          }
-        }
+        info = await getAccountInfo(freshAddress);
 
         if (finished) return;
 
