@@ -352,9 +352,8 @@ const currencyBridge: CurrencyBridge = {
               });
               if (finished) return;
               const accountId = `ripplejs:2:${currency.id}:${address}:${derivationMode}`;
-              let info;
 
-              info = await getAccountInfo(address);
+              const info = await getAccountInfo(address);
 
               // fresh address is address. ripple never changes.
               const freshAddress = address;
@@ -508,9 +507,8 @@ const sync = ({
         const ledgers = serverInfo.info.complete_ledgers.split("-");
         const minLedgerVersion = Number(ledgers[0]);
         const maxLedgerVersion = Number(ledgers[1]);
-        let info;
 
-        info = await getAccountInfo(freshAddress);
+        const info = await getAccountInfo(freshAddress);
 
         if (finished) return;
 
