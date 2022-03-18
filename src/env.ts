@@ -440,6 +440,16 @@ const envDefinitions = {
     parser: stringParser,
     desc: "(dev feature) seed to be used by speculos (device simulator)",
   },
+  SPECULOS_SERVICE_WS: {
+    def: "",
+    parser: stringParser,
+    desc: "(dev feature) Websocket url to speculos as a service",
+  },
+  SPECULOS_SERVICE_HTTP: {
+    def: "",
+    parser: stringParser,
+    desc: "(dev feature) Rest API to create a speculos by HTTP",
+  },
   SHOW_LEGACY_NEW_ACCOUNT: {
     def: false,
     parser: boolParser,
