@@ -11,6 +11,7 @@
     "ws": "^8.5.0"
   },
   "scripts": {
+    "postinstall": "tsc",
     "build": "tsc",
     "start": "tsc & node .",
     "dev": "tsc -w & nodemon ."

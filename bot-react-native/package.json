@@ -12,11 +12,12 @@
   },
   "dependencies": {
     "@ledgerhq/devices": "^6.24.1",
-    "@ledgerhq/live-common": "file:.yalc/@ledgerhq/live-common",
+    "@ledgerhq/live-common": "https://github.com/LedgerHQ/ledger-live-common.git#f15de01924e73acd0ea6fc4a03b698339f5def5b",
     "@react-native-async-storage/async-storage": "^1.16.2",
     "@tradle/react-native-http": "^2.0.0",
     "assert": "^1.1.1",
     "asyncstorage-down": "^4.2.0",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "browserify-zlib": "~0.1.4",
     "buffer": "^4.9.1",
     "console-browserify": "^1.1.0",

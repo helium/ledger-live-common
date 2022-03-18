@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import {Observable} from 'rxjs';
+import {getEnv} from "@ledgerhq/live-common/lib/env";
 
 // Ignore all log notifications:
 LogBox.ignoreAllLogs();
@@ -127,11 +128,11 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: 'dimgray'}}>
-      <View>
+    <SafeAreaView style={{backgroundColor: 'black'}}>
+      <View  style={{backgroundColor: '#A0C1B8'}}>
         <Button title="Run bot" onPress={() => launchBot()} />
       </View>
-      <View>
+      <View style={{backgroundColor: '#A0C1B8'}}>
         <Button title="Clear" onPress={() => clearLogs()} />
       </View>
       <View>
@@ -148,7 +149,7 @@ const App = () => {
         }>
         <View
           style={{
-            backgroundColor: Colors.black,
+            backgroundColor: 'black',
           }}>
           {logs.map(log => {
             return (
@@ -175,7 +176,7 @@ const App = () => {
         }>
         <View
           style={{
-            backgroundColor: Colors.black,
+            backgroundColor: 'black',
           }}>
           {resultBox.map((log: Log) => {
             return (
