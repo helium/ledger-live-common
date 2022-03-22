@@ -1,0 +1,13 @@
+{
+  "name": "bot-log-proxy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "ws": "^8.5.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

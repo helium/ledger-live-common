@@ -6,9 +6,8 @@ import { getEnv } from "../env";
 
 const data = {};
 
-const getSpeculosWs = () => getEnv("SPECULOS_SERVICE_WS")
-const getSpeculosHttp = () => getEnv("SPECULOS_SERVICE_HTTP")
-
+const getSpeculosWs = () => getEnv("SPECULOS_SERVICE_WS");
+const getSpeculosHttp = () => getEnv("SPECULOS_SERVICE_HTTP");
 
 const createTransport = async (id: string) => {
   const transport = await SpeculosTransportProxy.open(

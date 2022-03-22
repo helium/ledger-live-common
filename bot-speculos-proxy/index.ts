@@ -1,4 +1,6 @@
+/* eslint-disable no-console */
 import express, { json } from "express";
+import morgan from "morgan";
 import SpeculosTransport from "@ledgerhq/hw-transport-node-speculos";
 import {
   createSpeculosDevice,
@@ -7,9 +9,11 @@ import {
   releaseSpeculosDevice,
 } from "@ledgerhq/live-common/lib/load/speculos";
 import WebSocket from "ws";
+import "./log-setup";
 
-const PORT = process.env.PORT ?? "4343";
+const PORT = process.env.PORT ?? "4377";
 const app = express();
+app.use(morgan("tiny"));
 app.use(json());
 const seed = process.env.SEED;
 if (!seed) {
@@ -36,7 +40,6 @@ type MessageProxySpeculos =
 
 const sendToClient = (client: WebSocket | undefined, data: any) => {
   if (client) {
-    console.log("SEND : ", data);
     client.send(data);
   }
 };
@@ -52,7 +55,6 @@ websocketServer.on("connection", (client, req) => {
   }
 
   client.on("message", async (data) => {
-    console.log("RECEIVED =>", data.toString());
     const message: MessageProxySpeculos = JSON.parse(data.toString());
     const device = devicesList[id];
 
@@ -69,17 +71,18 @@ websocketServer.on("connection", (client, req) => {
           sendToClient(client, JSON.stringify({ type: "opened" }));
           break;
 
-        case "exchange":
+        case "exchange": {
           const res = await device.exchange(Buffer.from(message.data, "hex"));
           sendToClient(client, JSON.stringify({ type: "response", data: res }));
           break;
+        }
 
         case "button":
           device.button(message.data);
           break;
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
       throw e;
     }
   });
@@ -102,7 +105,7 @@ app.post("/app-candidate", async (req, res) => {
 
     return res.json(appCandidate);
   } catch (e: any) {
-    console.log(e.message);
+    console.error(e.message);
     return res.status(500).json({ error: e.message });
   }
 });
@@ -115,11 +118,7 @@ app.post("/", async (req, res) => {
       coinapps: coinapps,
     });
 
-    console.log(device.id, "has been created");
-
     device.transport.automationSocket?.on("data", (data) => {
-      console.log("[DATA of AUTOMATION SOCKET]", data.toString("ascii"));
-
       const split = data.toString("ascii").split("\n");
       split
         .filter((ascii) => !!ascii)
@@ -133,19 +132,14 @@ app.post("/", async (req, res) => {
     });
 
     device.transport.automationSocket?.on("error", (e) => {
-      console.log("ERROR", e);
-    });
-
-    device.transport.apduSocket?.on("data", (data) => {
-      console.log("[DATA of APDU SOCKET]", decodeAPDUPayload(data));
+      console.error("automationSocket error", e);
     });
 
     device.transport.apduSocket.on("error", (e) => {
-      console.log("[APDU ERROR]", e);
+      console.error("APDU ERROR", e);
     });
 
     device.transport.apduSocket.on("end", () => {
-      console.log("[APDU END]");
       if (clientList[device.id]) {
         sendToClient(clientList[device.id], JSON.stringify({ type: "close" }));
         clientList[device.id].close();
@@ -165,7 +159,7 @@ app.post("/", async (req, res) => {
 
     return res.json({ id: device.id });
   } catch (e: any) {
-    console.log(e.message);
+    console.error(e.message);
     return res.status(500).json({ error: e.message });
   }
 });
@@ -176,27 +170,11 @@ app.delete("/:id", async (req, res) => {
 
     return res.json(`${req.params.id} is destroyed`);
   } catch (e: any) {
-    console.log(e.message);
+    console.error(e.message);
     return res.status(500).json({ error: e.message });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Listen to :${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });
-
-function decodeAPDUPayload(data: Buffer) {
-  const dataLength = data.readUIntBE(0, 4); // 4 bytes tells the data length
-
-  const size = dataLength + 2; // size does not include the status code so we add 2
-
-  const payload = data.slice(4);
-
-  if (payload.length !== size) {
-    throw new Error(
-      `Expected payload of length ${size} but got ${payload.length}`
-    );
-  }
-
-  return payload;
-}

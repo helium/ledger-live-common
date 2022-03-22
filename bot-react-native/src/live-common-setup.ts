@@ -1,3 +1,5 @@
+import Config from 'react-native-config';
+import {setEnvUnsafe} from '@ledgerhq/live-common/lib/env';
 import {setSupportedCurrencies} from '@ledgerhq/live-common/lib/currencies';
 import {setDeviceMode} from '@ledgerhq/live-common/lib/hw/actions/app';
 import {setPlatformVersion} from '@ledgerhq/live-common/lib/platform/version';
@@ -42,3 +44,7 @@ setSupportedCurrencies([
   'cosmos_testnet',
   'elrond',
 ]);
+
+for (const k in Config) {
+  setEnvUnsafe(k as any, Config[k]);
+}

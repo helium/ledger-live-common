@@ -7,11 +7,16 @@ import { isAccountEmpty } from "../account";
 import { formatError, formatReportForConsole } from "../bot/formatters";
 import type { MutationReport, SpecReport } from "../bot/types";
 import {
-  calculate, inferTrackingPairForAccounts, initialState, loadCountervalues
+  calculate,
+  inferTrackingPairForAccounts,
+  initialState,
+  loadCountervalues,
 } from "../countervalues/logic";
 import {
-  findCryptoCurrencyByKeyword, formatCurrencyUnit,
-  getFiatCurrencyByTicker, isCurrencySupported
+  findCryptoCurrencyByKeyword,
+  formatCurrencyUnit,
+  getFiatCurrencyByTicker,
+  isCurrencySupported,
 } from "../currencies";
 import { getEnv } from "../env";
 import allSpecs from "../generated/specs";
@@ -28,8 +33,8 @@ type Arg = Partial<{
 }>;
 const usd = getFiatCurrencyByTicker("USD");
 export async function botProxy({ currency, family, mutation }: Arg = {}) {
-  const speculosWS = getEnv("SPECULOS_SERVICE_WS")
-  const speculosHttp =  getEnv("SPECULOS_SERVICE_HTTP")
+  const speculosWS = getEnv("SPECULOS_SERVICE_WS");
+  const speculosHttp = getEnv("SPECULOS_SERVICE_HTTP");
   invariant(speculosWS, "speculosWS required");
   invariant(speculosHttp, "SpeculosHttp required");
 
@@ -75,16 +80,16 @@ export async function botProxy({ currency, family, mutation }: Arg = {}) {
       const logs: string[] = [];
       specsLogs.push(logs);
       return runWithAppSpec(spec, (message) => {
-            log("bot", message);
-            console.log(message);
-            logs.push(message);
-          }).catch((fatalError) => ({
-            spec,
-            fatalError,
-            mutations: [],
-            accountsBefore: [],
-            accountsAfter: [],
-          }));
+        log("bot", message);
+        console.log(message);
+        logs.push(message);
+      }).catch((fatalError) => ({
+        spec,
+        fatalError,
+        mutations: [],
+        accountsBefore: [],
+        accountsAfter: [],
+      }));
     }
   );
   const allAccountsAfter = flatMap(results, (r) => r.accountsAfter || []);

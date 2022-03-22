@@ -77,7 +77,7 @@ export async function runWithAppSpec<T extends Transaction>(
       appQuery,
     });
   }
-  log("engine", "app-candidate-result: " + JSON.stringify(appCandidate))
+  log("engine", "app-candidate-result: " + JSON.stringify(appCandidate));
 
   const deviceParams = {
     ...(appCandidate as AppCandidate),
