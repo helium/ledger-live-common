@@ -16,7 +16,7 @@ websocketServer.on("connection", (client) => {
     const message = JSON.parse(str);
     if ((message?.type || "").startsWith("bot")) {
       // we're displaying to the CLI the most important logs which is the log of the bot
-      console.log(str.message);
+      console.log(message.message);
     }
     // we're saving it all
     stream.write(str + "\n");
