@@ -119,17 +119,6 @@ const getAccountShape: GetAccountShape = async (
     xpubOrAddress: address,
     derivationMode,
   });
-  const oldOperations = initialAccount?.operations || [];
-  const startAt = oldOperations.length
-    ? (oldOperations[0].blockHeight || 0) + 1
-    : 0;
-
-  const serverInfo = await getServerInfo();
-
-  const ledgers = serverInfo.info.complete_ledgers.split("-");
-  const minLedgerVersion = Number(ledgers[0]);
-  const maxLedgerVersion = Number(ledgers[1]);
-
   const accountInfo = await getAccountInfo(address);
 
   if (accountInfo.error === NEW_ACCOUNT_ERROR_MESSAGE) {
@@ -143,6 +132,17 @@ const getAccountShape: GetAccountShape = async (
       operationsCount: 0,
     };
   }
+
+  const serverInfo = await getServerInfo();
+
+  const oldOperations = initialAccount?.operations || [];
+  const startAt = oldOperations.length
+    ? (oldOperations[0].blockHeight || 0) + 1
+    : 0;
+
+  const ledgers = serverInfo.info.complete_ledgers.split("-");
+  const minLedgerVersion = Number(ledgers[0]);
+  const maxLedgerVersion = Number(ledgers[1]);
 
   const balance = new BigNumber(accountInfo.account_data.Balance);
 
