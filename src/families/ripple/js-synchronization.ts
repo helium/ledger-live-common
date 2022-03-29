@@ -154,7 +154,7 @@ const getAccountShape: GetAccountShape = async (
       ),
       ledger_index_max: maxLedgerVersion,
     })
-  ).transactions;
+  ).transactions || [];
 
   const newOperations = filterOperations(newTransactions, accountId, address);
 
