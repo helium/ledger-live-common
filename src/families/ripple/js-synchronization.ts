@@ -121,7 +121,7 @@ const getAccountShape: GetAccountShape = async (
   });
   const accountInfo = await getAccountInfo(address);
 
-  if (accountInfo.error === NEW_ACCOUNT_ERROR_MESSAGE) {
+  if (!accountInfo || accountInfo.error === NEW_ACCOUNT_ERROR_MESSAGE) {
     return {
       id: accountId,
       xpub: address,
