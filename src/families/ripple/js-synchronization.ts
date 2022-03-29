@@ -133,15 +133,15 @@ const getAccountShape: GetAccountShape = async (
   const accountInfo = await getAccountInfo(address);
 
   if (accountInfo.error === NEW_ACCOUNT_ERROR_MESSAGE) {
-      return {
-        id: accountId,
-        xpub: address,
-        blockHeight: 0,
-        balance: new BigNumber(0),
-        spendableBalance: new BigNumber(0),
-        operations: [],
-        operationsCount: 0,
-      }
+    return {
+      id: accountId,
+      xpub: address,
+      blockHeight: 0,
+      balance: new BigNumber(0),
+      spendableBalance: new BigNumber(0),
+      operations: [],
+      operationsCount: 0,
+    };
   }
 
   const balance = new BigNumber(accountInfo.account_data.Balance);
@@ -168,7 +168,6 @@ const getAccountShape: GetAccountShape = async (
     spendableBalance: balance,
     operations,
     operationsCount: operations.length,
-
   };
 
   return shape;
