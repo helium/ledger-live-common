@@ -146,15 +146,16 @@ const getAccountShape: GetAccountShape = async (
 
   const balance = new BigNumber(accountInfo.account_data.Balance);
 
-  const newTransactions = (
-    await getTransactions(address, {
-      ledger_index_min: Math.max(
-        startAt, // if there is no ops, it might be after a clear and we prefer to pull from the oldest possible history
-        minLedgerVersion
-      ),
-      ledger_index_max: maxLedgerVersion,
-    })
-  ).transactions || [];
+  const newTransactions =
+    (
+      await getTransactions(address, {
+        ledger_index_min: Math.max(
+          startAt, // if there is no ops, it might be after a clear and we prefer to pull from the oldest possible history
+          minLedgerVersion
+        ),
+        ledger_index_max: maxLedgerVersion,
+      })
+    ).transactions || [];
 
   const newOperations = filterOperations(newTransactions, accountId, address);
 
