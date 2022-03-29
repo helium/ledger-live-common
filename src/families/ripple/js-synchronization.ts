@@ -164,7 +164,7 @@ const getAccountShape: GetAccountShape = async (
   const shape = {
     id: accountId,
     xpub: address,
-    blockHeight: operations[0].blockHeight || 0,
+    blockHeight: maxLedgerVersion,
     balance,
     spendableBalance: balance,
     operations,
