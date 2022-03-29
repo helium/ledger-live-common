@@ -28,10 +28,25 @@ export const submit = async (signature: string): Promise<any> => {
   return res.data.result;
 };
 
+type AccountInfo = {
+  account_data: {
+    Account: string;
+    Balance: string;
+    Flags: number;
+    LedgerEntryType: string;
+    OwnerCount: number;
+    PreviousTxnID: string;
+    PreviousTxnLgrSeq: number;
+    Sequence: number;
+    index: string;
+  };
+  error: string;
+};
+
 export const getAccountInfo = async (
   recipient: string,
   current?: boolean
-): Promise<any> => {
+): Promise<AccountInfo> => {
   const res = await network({
     method: "POST",
     url: `${defaultEndpoint()}`,
