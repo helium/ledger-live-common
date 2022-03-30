@@ -1,11 +1,9 @@
 /* eslint-disable no-console */
 import { log } from "@ledgerhq/logs";
 import { BigNumber } from "bignumber.js";
-import fs from "fs";
 import flatMap from "lodash/flatMap";
 import groupBy from "lodash/groupBy";
-import path from "path";
-import { isAccountEmpty, toAccountRaw } from "../account";
+import { isAccountEmpty } from "../account";
 import {
   calculate,
   inferTrackingPairForAccounts,
@@ -21,7 +19,7 @@ import allSpecs from "../generated/specs";
 import network from "../network";
 import { getPortfolio } from "../portfolio";
 import { promiseAllBatched } from "../promise";
-import type { Account } from "../types";
+import { botReportFolder } from "./botReportFolder";
 import { runWithAppSpec } from "./engine";
 import { formatError, formatReportForConsole } from "./formatters";
 import type { MutationReport, SpecReport } from "./types";
@@ -32,20 +30,6 @@ type Arg = Partial<{
 }>;
 const usd = getFiatCurrencyByTicker("USD");
 
-function makeAppJSON(accounts: Account[]) {
-  const jsondata = {
-    data: {
-      settings: {
-        hasCompletedOnboarding: true,
-      },
-      accounts: accounts.map((account) => ({
-        data: toAccountRaw(account),
-        version: 1,
-      })),
-    },
-  };
-  return JSON.stringify(jsondata);
-}
 
 export async function bot({ currency, family, mutation }: Arg = {}) {
   const specs: any[] = [];
@@ -414,23 +398,7 @@ export async function bot({ currency, family, mutation }: Arg = {}) {
     const { SLACK_API_TOKEN, SLACK_CHANNEL, BOT_REPORT_FOLDER } = process.env;
 
     if (BOT_REPORT_FOLDER) {
-      await Promise.all([
-        fs.promises.writeFile(
-          path.join(BOT_REPORT_FOLDER, "full-report.md"),
-          body,
-          "utf-8"
-        ),
-        fs.promises.writeFile(
-          path.join(BOT_REPORT_FOLDER, "before-app.json"),
-          makeAppJSON(allAccountsBefore),
-          "utf-8"
-        ),
-        fs.promises.writeFile(
-          path.join(BOT_REPORT_FOLDER, "after-app.json"),
-          makeAppJSON(allAccountsAfter),
-          "utf-8"
-        ),
-      ]);
+      await botReportFolder(BOT_REPORT_FOLDER, body, allAccountsBefore, allAccountsAfter)
     }
 
     const { data: githubComment } = await network({
