@@ -1,6 +1,6 @@
 import Config from 'react-native-config';
 import {listen, log} from '@ledgerhq/logs';
-import {botProxy} from '@ledgerhq/live-common/lib/botProxy';
+import { bot } from '@ledgerhq/live-common/lib/bot';
 import React, {useEffect} from 'react';
 import {LogBox, Text, View} from 'react-native';
 
@@ -31,7 +31,7 @@ const launchBot = async () => {
     if (Config.BOT_FILTER_FAMILY) {
       arg.family = Config.OT_FILTER_FAMILY;
     }
-    await botProxy(arg);
+    await bot(arg);
     // TODO inform upstream that it's finished
   } catch (e: any) {
     // TODO inform upstream that critical error happened

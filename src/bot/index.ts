@@ -1,34 +1,30 @@
 /* eslint-disable no-console */
-import fs from "fs";
-import path from "path";
-import { BigNumber } from "bignumber.js";
-import groupBy from "lodash/groupBy";
 import { log } from "@ledgerhq/logs";
-import invariant from "invariant";
+import { BigNumber } from "bignumber.js";
+import fs from "fs";
 import flatMap from "lodash/flatMap";
+import groupBy from "lodash/groupBy";
+import path from "path";
+import { isAccountEmpty, toAccountRaw } from "../account";
+import {
+  calculate,
+  inferTrackingPairForAccounts,
+  initialState,
+  loadCountervalues
+} from "../countervalues/logic";
+import {
+  findCryptoCurrencyByKeyword, formatCurrencyUnit,
+  getFiatCurrencyByTicker, isCurrencySupported
+} from "../currencies";
 import { getEnv } from "../env";
 import allSpecs from "../generated/specs";
 import network from "../network";
-import { withLibcore } from "../libcore/access";
-import type { Account } from "../types";
-import type { MutationReport, SpecReport } from "./types";
-import { promiseAllBatched } from "../promise";
-import {
-  findCryptoCurrencyByKeyword,
-  isCurrencySupported,
-  formatCurrencyUnit,
-  getFiatCurrencyByTicker,
-} from "../currencies";
-import { isAccountEmpty, toAccountRaw } from "../account";
-import { runWithAppSpec } from "./engine";
-import { formatReportForConsole, formatError } from "./formatters";
-import {
-  initialState,
-  calculate,
-  loadCountervalues,
-  inferTrackingPairForAccounts,
-} from "../countervalues/logic";
 import { getPortfolio } from "../portfolio";
+import { promiseAllBatched } from "../promise";
+import type { Account } from "../types";
+import { runWithAppSpec } from "./engine";
+import { formatError, formatReportForConsole } from "./formatters";
+import type { MutationReport, SpecReport } from "./types";
 type Arg = Partial<{
   currency: string;
   family: string;
@@ -52,12 +48,6 @@ function makeAppJSON(accounts: Account[]) {
 }
 
 export async function bot({ currency, family, mutation }: Arg = {}) {
-  const SEED = getEnv("SEED");
-  invariant(SEED, "SEED required");
-  const libcoreVersion = await withLibcore((core) =>
-    core.LedgerCore.getStringVersion()
-  );
-  log("libcoreVersion", "libcore version " + libcoreVersion);
   const specs: any[] = [];
   const specsLogs: string[][] = [];
   const maybeCurrency = currency

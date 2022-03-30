@@ -60,7 +60,6 @@ export default class SpeculosTransportProxy extends Transport {
       };
     });
 
-    
   static async open(url: string) {
     const automationEvents: Subject<Record<string, any>> = new Subject();
     const exchangeMethods = await new Promise((resolve, reject) => {
@@ -141,7 +140,7 @@ export default class SpeculosTransportProxy extends Transport {
 
   async exchange(apdu: Buffer): Promise<Buffer> {
     const hex = apdu.toString("hex");
-    
+
     log("apdu", "=> " + hex);
     const res: Buffer = await new Promise((resolve, reject) => {
       this.hook.rejectExchange = reject;
