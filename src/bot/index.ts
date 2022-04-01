@@ -8,11 +8,13 @@ import {
   calculate,
   inferTrackingPairForAccounts,
   initialState,
-  loadCountervalues
+  loadCountervalues,
 } from "../countervalues/logic";
 import {
-  findCryptoCurrencyByKeyword, formatCurrencyUnit,
-  getFiatCurrencyByTicker, isCurrencySupported
+  findCryptoCurrencyByKeyword,
+  formatCurrencyUnit,
+  getFiatCurrencyByTicker,
+  isCurrencySupported,
 } from "../currencies";
 import { getEnv } from "../env";
 import allSpecs from "../generated/specs";
@@ -29,7 +31,6 @@ type Arg = Partial<{
   mutation: string;
 }>;
 const usd = getFiatCurrencyByTicker("USD");
-
 
 export async function bot({ currency, family, mutation }: Arg = {}) {
   const specs: any[] = [];
@@ -398,7 +399,12 @@ export async function bot({ currency, family, mutation }: Arg = {}) {
     const { SLACK_API_TOKEN, SLACK_CHANNEL, BOT_REPORT_FOLDER } = process.env;
 
     if (BOT_REPORT_FOLDER) {
-      await botReportFolder(BOT_REPORT_FOLDER, body, allAccountsBefore, allAccountsAfter)
+      await botReportFolder(
+        BOT_REPORT_FOLDER,
+        body,
+        allAccountsBefore,
+        allAccountsAfter
+      );
     }
 
     const { data: githubComment } = await network({

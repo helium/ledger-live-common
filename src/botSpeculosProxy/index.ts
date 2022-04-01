@@ -22,10 +22,7 @@ type MessageProxySpeculos =
     }
   | { type: "error"; error: string };
 
-export const botSpeculosProxy = (
-  port: number = 4377,
-  wsPort: number = 8435
-) => {
+export const botSpeculosProxy = (port = 4377, wsPort = 8435) => {
   const app = express();
   // app.use(morgan("tiny"));
   app.use(json());

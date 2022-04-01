@@ -126,7 +126,7 @@ const envDefinitions = {
     desc: "node API for tezos (for broadcast only)",
   },
   API_TRONGRID_PROXY: {
-  parser: stringParser,
+    parser: stringParser,
     def: "https://tron.coin.ledger.com",
     desc: "proxy url for trongrid API",
   },
@@ -148,7 +148,7 @@ const envDefinitions = {
   BOT_LOG_PROXY_FILE: {
     def: "",
     parser: stringParser,
-    desc: "Bot log proxy path to save log file"
+    desc: "Bot log proxy path to save log file",
   },
   COINAPPS: {
     def: "",

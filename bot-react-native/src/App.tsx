@@ -1,6 +1,6 @@
 import Config from 'react-native-config';
 import {listen, log} from '@ledgerhq/logs';
-import { bot } from '@ledgerhq/live-common/lib/bot';
+import {bot} from '@ledgerhq/live-common/lib/bot';
 import React, {useEffect} from 'react';
 import {LogBox, Text, View} from 'react-native';
 
@@ -9,11 +9,11 @@ if (Config.BOT_LOG_SERVICE) {
   logger = new WebSocket(Config.BOT_LOG_SERVICE);
 }
 
-listen(log => {
+listen(info => {
   if (logger) {
-    logger.send(JSON.stringify(log));
+    logger.send(JSON.stringify(info));
   } else {
-    console.log(log);
+    console.log(info);
   }
 });
 

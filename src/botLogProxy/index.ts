@@ -9,7 +9,7 @@ export const botProxyLog = (port?: number) => {
     process.exit(1);
   }
 
-  var stream = fs.createWriteStream(file, { flags: "a" });
+  const stream = fs.createWriteStream(file, { flags: "a" });
   const websocketServer = new WebSocket.Server({ port: port || 8331 });
   websocketServer.on("connection", (client) => {
     client.on("message", async (data) => {
