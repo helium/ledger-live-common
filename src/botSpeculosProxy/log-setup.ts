@@ -1,5 +1,5 @@
 import winston from "winston";
-import simple from "@ledgerhq/live-common/lib/logs/simple";
+import simple from "../logs/simple";
 import { listen } from "@ledgerhq/logs";
 
 const { VERBOSE, VERBOSE_FILE } = process.env;
