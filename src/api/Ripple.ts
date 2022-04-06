@@ -100,7 +100,7 @@ export const getTransactions = async (
       ],
     },
   });
-  return res.data.result;
+  return res.data.result.transactions;
 };
 
 export default async function getLedgerIndex(): Promise<number> {

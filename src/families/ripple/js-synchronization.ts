@@ -14,30 +14,7 @@ import { encodeOperationId } from "../../operation";
 import { Account, Operation } from "../../types";
 import { encodeAccountId } from "../../account";
 import { NEW_ACCOUNT_ERROR_MESSAGE } from "./bridge/js";
-
-interface Currency {
-  currency: string;
-  amount: string;
-}
-
-interface TxXRPL {
-  meta: {
-    TransactionResult: string;
-    delivered_amount: Currency | string;
-  };
-  tx: {
-    TransactionType: string;
-    Fee: string;
-    Account: string;
-    Destination: string;
-    DestinationTag?: number;
-    Amount: string;
-    Sequence: number;
-    date: number;
-    inLedger: number;
-    hash: string;
-  };
-}
+import { TxXRPL } from "./types.api";
 
 const txToOperation =
   (accountId: string, address: string) =>
@@ -147,15 +124,13 @@ const getAccountShape: GetAccountShape = async (
   const balance = new BigNumber(accountInfo.account_data.Balance);
 
   const newTransactions =
-    (
-      await getTransactions(address, {
-        ledger_index_min: Math.max(
-          startAt, // if there is no ops, it might be after a clear and we prefer to pull from the oldest possible history
-          minLedgerVersion
-        ),
-        ledger_index_max: maxLedgerVersion,
-      })
-    ).transactions || [];
+    (await getTransactions(address, {
+      ledger_index_min: Math.max(
+        startAt, // if there is no ops, it might be after a clear and we prefer to pull from the oldest possible history
+        minLedgerVersion
+      ),
+      ledger_index_max: maxLedgerVersion,
+    })) || [];
 
   const newOperations = filterOperations(newTransactions, accountId, address);
 
