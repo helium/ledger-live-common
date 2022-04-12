@@ -2080,9 +2080,9 @@
     bignumber.js "^9.0.1"
     json-rpc-2.0 "^0.2.16"
 
-"@ledgerhq/live-common@https://github.com/LedgerHQ/ledger-live-common.git#poc-speculos-mobile-bot":
+"@ledgerhq/live-common@https://github.com/LedgerHQ/ledger-live-common.git#123fd1581d0df41bd0a02af7666653d7f7dbc80b":
   version "21.35.0"
-  resolved "https://github.com/LedgerHQ/ledger-live-common.git#7505870df5eaa69e1cf9c8f6a8076800c5fc7ad6"
+  resolved "https://github.com/LedgerHQ/ledger-live-common.git#123fd1581d0df41bd0a02af7666653d7f7dbc80b"
   dependencies:
     "@celo/contractkit" "^1.5.2"
     "@celo/wallet-base" "^1.5.2"
