@@ -19,12 +19,6 @@ jobs:
       - name: Install dependencies of BOT
         working-directory: bot-react-native
         run: yarn --frozen-lockfile
-      - name: Cache node modules
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: bot-react-native/node_modules
-          key: node-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Rebuild detox
         working-directory: bot-react-native
         if: steps.cache.outputs.cache-hit == 'true'
