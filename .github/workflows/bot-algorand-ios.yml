@@ -18,7 +18,7 @@ jobs:
         run: sudo killall -w apt-get apt || echo OK
       - name: Install dependencies of BOT
         working-directory: bot-react-native
-        run: yarn --frozen-lockfile
+        run: yarn --frozen-lockfile --network-timeout 100000 --network-concurrency 1
       - name: Rebuild detox
         working-directory: bot-react-native
         if: steps.cache.outputs.cache-hit == 'true'
