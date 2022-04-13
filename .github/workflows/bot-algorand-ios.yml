@@ -9,12 +9,6 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Retrieving coin apps
-        uses: actions/checkout@v2
-        with:
-          repository: LedgerHQ/coin-apps
-          token: ${{ secrets.PAT }}
-          path: coin-apps
       - uses: actions/setup-node@master
         with:
           node-version: 14.x
@@ -22,8 +16,6 @@ jobs:
         run: npm i -g yarn
       - name: kill apt-get
         run: sudo killall -w apt-get apt || echo OK
-      - name: Install linux deps
-        run: sudo apt-get install -y libusb-1.0-0-dev jq
       - name: Install dependencies
         run: |
           yarn global add yalc
