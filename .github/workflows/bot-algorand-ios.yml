@@ -16,18 +16,9 @@ jobs:
         run: npm i -g yarn
       - name: kill apt-get
         run: sudo killall -w apt-get apt || echo OK
-      - name: Install dependencies
-        run: |
-          yarn global add yalc
-          yarn --frozen-lockfile
-          yarn ci-setup-cli
-      - name: LOGGER
-        env:
-          BOT_LOG_PROXY_FILE: botreport/logs.txt
-        run: |
-          mkdir botreport
-          cd cli
-          yarn run botProxyLog -p 8331 &
+      - name: Install dependencies of BOT
+        working-directory: bot-react-native
+        run: yarn --frozen-lockfile
       - name: Cache node modules
         uses: actions/cache@v3
         id: cache
