@@ -27,7 +27,7 @@ jobs:
         run: |
           mkdir botreport
           cd cli
-          yarn run botProxyLog -p 8331 &
+          node ./bin/index botProxyLog -p 8331 &
       - name: Install dependencies of BOT
         working-directory: bot-react-native
         run: yarn --frozen-lockfile --network-timeout 100000 --network-concurrency 1
