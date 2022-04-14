@@ -50,7 +50,17 @@ jobs:
       - run: brew tap wix/brew
       - run: brew install applesimutils
       - name: add env var to env file
-        working-directory: bot-react-native
+        uses: DamianReeves/write-file-action
+        with:
+          path: ./bot-react-native/.ci.env
+          contents: |
+            echo "GITHUB_SHA: ${GITHUB_SHA}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_RUN_ID: ${{ github.run_id }}
+            GITHUB_WORKFLOW: ${{ github.workflow }}
+            SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
+            SLACK_CHANNEL: ledger-live-bot"
+          write-mode: append
         run: |
           echo "GITHUB_SHA: ${GITHUB_SHA}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
