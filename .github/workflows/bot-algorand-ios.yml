@@ -50,7 +50,7 @@ jobs:
       - run: brew tap wix/brew
       - run: brew install applesimutils
       - name: add env var to env file
-        uses: DamianReeves/write-file-action
+        uses: DamianReeves/write-file-action@v1.0
         with:
           path: ./bot-react-native/.ci.env
           contents: |
