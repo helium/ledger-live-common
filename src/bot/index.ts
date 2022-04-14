@@ -432,7 +432,6 @@ export async function bot({ currency, family, mutation }: Arg = {}) {
         },
       });
     }
-    return 1;
   } else {
     log(
       "github",
@@ -458,5 +457,5 @@ export async function bot({ currency, family, mutation }: Arg = {}) {
     console.error(txt);
     return -1;
   }
-  return -1;
+  return 1;
 }
