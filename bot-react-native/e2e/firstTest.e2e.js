@@ -1,4 +1,4 @@
-jest.setTimeout(1200000);
+jest.setTimeout(120 * 60 * 1000);
 
 describe('Run simple bot', () => {
   beforeAll(async () => {
@@ -10,6 +10,6 @@ describe('Run simple bot', () => {
   });
 
   it('should show bot finished', async () => {
-    await expect(element(by.text('Bot finished'))).toBeVisible();
+    await waitFor(element(by.text('Bot finished'))).toBeVisible().withTimeout(120 * 60 * 1000);
   });
 });

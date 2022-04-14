@@ -35,13 +35,13 @@ jobs:
         working-directory: bot-react-native
         if: steps.cache.outputs.cache-hit == 'true'
         run: yarn detox clean-framework-cache && yarn detox build-framework-cache
-        timeout-minutes: 120     
+        timeout-minutes: 120
       - name: Cache Pods
         uses: actions/cache@v3
         id: podcache
         with:
           path: bot-react-native/ios/Pods
-          key: pods-${{ hashFiles('**/Podfile.lock') }}
+          key: pods-${{ hashFiles('bot-react-native/**/Podfile.lock') }}
       - name: Update Pods
         working-directory: bot-react-native
         run: |
@@ -49,6 +49,15 @@ jobs:
           cd ios && pod install && cd ..
       - run: brew tap wix/brew
       - run: brew install applesimutils
+      - name: add env var to env file
+        working-directory: bot-react-native
+        run: |
+          echo "GITHUB_SHA: ${GITHUB_SHA}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_WORKFLOW: ${{ github.workflow }}
+          SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
+          SLACK_CHANNEL: ledger-live-bot" >> .ci.env
       - name: build bot
         working-directory: bot-react-native
         run: yarn detox build e2e --configuration ios

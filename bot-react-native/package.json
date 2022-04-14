@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@ledgerhq/devices": "^6.24.1",
-    "@ledgerhq/live-common": "https://github.com/LedgerHQ/ledger-live-common.git#123fd1581d0df41bd0a02af7666653d7f7dbc80b",
+    "@ledgerhq/live-common": "https://github.com/LedgerHQ/ledger-live-common.git#b09c6974f6d280c10d6cc7b09fc3d2075854ce8d",
     "@react-native-async-storage/async-storage": "^1.16.2",
     "@tradle/react-native-http": "^2.0.0",
     "assert": "^1.1.1",
