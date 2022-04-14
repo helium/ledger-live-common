@@ -61,13 +61,6 @@ jobs:
             SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
             SLACK_CHANNEL: ledger-live-bot"
           write-mode: append
-        run: |
-          echo "GITHUB_SHA: ${GITHUB_SHA}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-          GITHUB_WORKFLOW: ${{ github.workflow }}
-          SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_CHANNEL: ledger-live-bot" >> .ci.env
       - name: build bot
         working-directory: bot-react-native
         run: yarn detox build e2e --configuration ios
