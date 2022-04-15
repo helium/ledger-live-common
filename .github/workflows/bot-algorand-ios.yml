@@ -49,18 +49,6 @@ jobs:
           cd ios && pod install && cd ..
       - run: brew tap wix/brew
       - run: brew install applesimutils
-      - name: add env var to env file
-        uses: DamianReeves/write-file-action@v1.0
-        with:
-          path: ./bot-react-native/.ci.env
-          contents: |
-            echo "GITHUB_SHA: ${GITHUB_SHA}
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            GITHUB_RUN_ID: ${{ github.run_id }}
-            GITHUB_WORKFLOW: ${{ github.workflow }}
-            SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-            SLACK_CHANNEL: ledger-live-bot"
-          write-mode: append
       - name: build bot
         working-directory: bot-react-native
         run: yarn detox build e2e --configuration ios
