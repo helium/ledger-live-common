@@ -10,6 +10,6 @@ describe('Run simple bot', () => {
   });
 
   it('should show bot finished', async () => {
-    await waitFor(element(by.text('Bot finished'))).toBeVisible().withTimeout(120 * 60 * 1000);
+    await waitFor(element(by.text('Bot is running. Check the main console.'))).not.toBeVisible().withTimeout(120 * 60 * 1000);
   });
 });
