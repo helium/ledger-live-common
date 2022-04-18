@@ -8,6 +8,8 @@ import ethereum from "../../families/ethereum/bridge/js";
 
 import filecoin from "../../families/filecoin/bridge/js";
 
+import helium from "../../families/helium/bridge/js";
+
 import neo from "../../families/neo/bridge/js";
 
 import polkadot from "../../families/polkadot/bridge/js";
@@ -27,6 +29,7 @@ export default {
   elrond,
   ethereum,
   filecoin,
+  helium,
   neo,
   polkadot,
   ripple,

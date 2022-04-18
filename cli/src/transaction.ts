@@ -83,6 +83,7 @@ export async function inferTransactions(
   mainAccount: Account,
   opts: InferTransactionsOpts
 ): Promise<[Transaction, TransactionStatus][]> {
+  // console.log('infer txns', mainAccount, opts)
   const bridge = getAccountBridge(mainAccount, null);
   const specific = perFamily[mainAccount.currency.family];
 
@@ -114,6 +115,8 @@ export async function inferTransactions(
     })
   );
 
+  console.log('all', all)
+
   if (opts.shuffle) {
     all = shuffle(all);
   }
@@ -122,17 +125,21 @@ export async function inferTransactions(
     inferTransactions(all, opts, {
       inferAmount,
     }).map(async (transaction) => {
-      const tx = await bridge.prepareTransaction(mainAccount, transaction);
+      const { transaction: tx } = await bridge.prepareTransaction(mainAccount, transaction);
+      console.log('tx', tx)
       const status = await bridge.getTransactionStatus(mainAccount, tx);
       const errorKeys = Object.keys(status.errors);
 
       if (errorKeys.length) {
+        console.log('throwing', status)
         throw status.errors[errorKeys[0]];
       }
 
       return [tx, status];
     })
   );
+
+  console.log('inferred txns', transactions)
 
   return transactions;
 }

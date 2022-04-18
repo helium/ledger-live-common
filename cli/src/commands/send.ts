@@ -52,6 +52,7 @@ export default {
         format: string;
       }
   ) => {
+    console.log(opts)
     const l =
       opts.format !== "json" && opts.format !== "silent" // eslint-disable-next-line no-console
         ? (l) => console.log(l)

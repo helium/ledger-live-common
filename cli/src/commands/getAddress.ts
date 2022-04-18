@@ -35,8 +35,9 @@ export default {
       derivationMode: string;
       verify: boolean;
     }>
-  ) =>
-    inferCurrency(arg).pipe(
+  ) => {
+    console.log("here!", arg);
+    return inferCurrency(arg).pipe(
       mergeMap((currency) => {
         if (!currency) {
           throw new Error("no currency provided");
@@ -57,5 +58,6 @@ export default {
           )
         );
       })
-    ),
+    );
+  },
 };

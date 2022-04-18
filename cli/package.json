@@ -27,17 +27,21 @@
   "peerDependencies": {
     "@ledgerhq/hw-transport-node-ble": "5.7.0"
   },
+  "resolutions": {
+    "@ledgerhq/hw-app-helium": "file:.yalc/@ledgerhq/hw-app-helium"
+  },
   "dependencies": {
-    "@ledgerhq/cryptoassets": "6.12.2",
+    "@ledgerhq/cryptoassets": "file:.yalc/@ledgerhq/cryptoassets",
     "@ledgerhq/errors": "6.10.0",
     "@ledgerhq/hw-app-btc": "6.12.1",
+    "@ledgerhq/hw-app-helium": "file:.yalc/@ledgerhq/hw-app-helium",
     "@ledgerhq/hw-transport-http": "6.11.2",
     "@ledgerhq/hw-transport-mocker": "6.11.2",
     "@ledgerhq/hw-transport-node-ble": "^6.11.2",
     "@ledgerhq/hw-transport-node-hid": "6.11.2",
     "@ledgerhq/hw-transport-node-speculos": "6.11.2",
     "@ledgerhq/ledger-core": "6.14.5",
-    "@ledgerhq/live-common": "^21.13.2",
+    "@ledgerhq/live-common": "file:.yalc/@ledgerhq/live-common",
     "@ledgerhq/logs": "6.10.0",
     "@walletconnect/client": "^1.6.6",
     "asciichart": "^1.5.25",

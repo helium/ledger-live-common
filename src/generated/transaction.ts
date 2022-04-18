@@ -12,6 +12,8 @@ import ethereum from "../families/ethereum/transaction";
 
 import filecoin from "../families/filecoin/transaction";
 
+import helium from "../families/helium/transaction";
+
 import neo from "../families/neo/transaction";
 
 import polkadot from "../families/polkadot/transaction";
@@ -33,6 +35,7 @@ export default {
   elrond,
   ethereum,
   filecoin,
+  helium,
   neo,
   polkadot,
   ripple,
